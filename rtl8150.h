@@ -75,7 +75,6 @@
 
 #define	RTL8150_MTU		1540
 #define	RTL8150_TX_TIMEOUT	(HZ)
-#define	RX_SKB_POOL_SIZE	4
 
 /* rtl8150 flags */
 #define	RTL8150_HW_CRC		0
@@ -117,8 +116,6 @@ struct rtl8150 {
 	struct net_device *netdev;
 	struct urb *rx_urb, *tx_urb, *intr_urb, *ctrl_urb;
 	struct sk_buff *tx_skb, *rx_skb;
-	struct sk_buff *rx_skb_pool[RX_SKB_POOL_SIZE];
-	spinlock_t rx_pool_lock;
 	struct usb_ctrlrequest dr;
 	int intr_interval;
 	__le16 rx_creg;
