@@ -729,7 +729,7 @@ static int rtl8150_probe(struct usb_interface *intf,
 	SET_ETHTOOL_OPS(netdev, &ops);
 	dev->intr_interval = 100;	/* 100ms */
 
-	if (!alloc_all_urbs(dev)) {
+	if (alloc_all_urbs(dev) < 0) {
 		dev_err(&intf->dev, "out of memory\n");
 		goto out;
 	}
