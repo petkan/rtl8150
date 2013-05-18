@@ -114,15 +114,18 @@ struct rtl8150 {
 	struct usb_device *udev;
 	struct tasklet_struct tl;
 	struct net_device *netdev;
-	struct urb *rx_urb, *tx_urb, *intr_urb, *ctrl_urb;
+	struct urb *rx_urb, *tx_urb, *intr_urb;
 	struct sk_buff *tx_skb, *rx_skb;
-	struct usb_ctrlrequest dr;
 	int intr_interval;
-	__le16 rx_creg;
 	u8 *intr_buff;
 	u8 phy;
 };
 
 typedef struct rtl8150 rtl8150_t;
+
+struct async_req {
+	struct usb_ctrlrequest dr;
+	u16 rx_creg;
+};
 
 #endif	/* __rtl8150_h__ */
