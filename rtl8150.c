@@ -204,21 +204,23 @@ static int rtl8150_reset(rtl8150_t *dev)
 
 static int alloc_all_urbs(rtl8150_t *dev)
 {
+	int res = -ENOMEM;
+
 	dev->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
 	if (!dev->rx_urb)
-		return 0;
+		return res;
 	dev->tx_urb = usb_alloc_urb(0, GFP_KERNEL);
 	if (!dev->tx_urb) {
 		usb_free_urb(dev->rx_urb);
-		return 0;
+		return res;
 	}
 	dev->intr_urb = usb_alloc_urb(0, GFP_KERNEL);
 	if (!dev->intr_urb) {
 		usb_free_urb(dev->rx_urb);
 		usb_free_urb(dev->tx_urb);
-		return 0;
+		return res;
 	}
-	return 1;
+	return 0;
 }
 
 static void free_all_urbs(rtl8150_t *dev)
@@ -720,7 +722,7 @@ static int rtl8150_probe(struct usb_interface *intf,
 	SET_ETHTOOL_OPS(netdev, &ops);
 	dev->intr_interval = 100;	/* 100ms */
 
-	if (!alloc_all_urbs(dev)) {
+	if (alloc_all_urbs(dev) < 0) {
 		dev_err(&intf->dev, "out of memory\n");
 		goto out;
 	}
