@@ -738,7 +738,7 @@ static int rtl8150_probe(struct usb_interface *intf,
 	}
 
 	dev_info(&intf->dev, "%s: %s %s\n", netdev->name,
-		 driver_name, DRIVER_VERSION);
+		 DRIVER_DESC, DRIVER_VERSION);
 	return 0;
 
 out2:
