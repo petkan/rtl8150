@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2002 - 2013 Petko Manolov (petkan@nucleusys.com)
+ *  Copyright (c) 2002-2013 Petko Manolov (petkan@nucleusys.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -75,7 +75,6 @@
 
 #define	RTL8150_MTU		1540
 #define	RTL8150_TX_TIMEOUT	(HZ)
-#define	RX_SKB_POOL_SIZE	4
 
 /* rtl8150 flags */
 #define	RTL8150_HW_CRC		0
@@ -97,6 +96,19 @@
 #define PRODUCT_ID_SP128AR		0x0003
 #define	PRODUCT_ID_PRESTIGE		0x401a
 
+#undef	EEPROM_WRITE
+
+/* table of devices that work with this driver */
+static struct usb_device_id rtl8150_table[] = {
+	{USB_DEVICE(VENDOR_ID_REALTEK, PRODUCT_ID_RTL8150)},
+	{USB_DEVICE(VENDOR_ID_MELCO, PRODUCT_ID_LUAKTX)},
+	{USB_DEVICE(VENDOR_ID_MICRONET, PRODUCT_ID_SP128AR)},
+	{USB_DEVICE(VENDOR_ID_LONGSHINE, PRODUCT_ID_LCS8138TX)},
+	{USB_DEVICE(VENDOR_ID_OQO, PRODUCT_ID_RTL8150)},
+	{USB_DEVICE(VENDOR_ID_ZYXEL, PRODUCT_ID_PRESTIGE)},
+	{}
+};
+
 struct rtl8150 {
 	unsigned long flags;
 	struct usb_device *udev;
@@ -112,7 +124,6 @@ struct rtl8150 {
 typedef struct rtl8150 rtl8150_t;
 
 struct async_req {
-	struct urb as_urb;
 	struct usb_ctrlrequest dr;
 	u16 rx_creg;
 };
