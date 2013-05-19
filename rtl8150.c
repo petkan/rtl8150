@@ -88,7 +88,7 @@ static int async_set_registers(rtl8150_t *dev, u16 indx, u16 size, u16 reg)
 	req->dr.wValue = cpu_to_le16(indx);
 	req->dr.wLength = cpu_to_le16(size);
 	usb_fill_control_urb(async_urb, dev->udev,
-	                     usb_sndctrlpipe(dev->udev, 0), (void *) &req->dr,
+	                     usb_sndctrlpipe(dev->udev, 0), (void *)&req->dr,
 			     &req->rx_creg, size, async_set_reg_cb, req);
 	res = usb_submit_urb(async_urb, GFP_ATOMIC);
 	if (res) {
@@ -287,7 +287,7 @@ static void read_bulk_callback(struct urb *urb)
 	netdev->stats.rx_packets++;
 	netdev->stats.rx_bytes += pkt_len;
 
-	skb = __netdev_alloc_skb_ip_align(dev->netdev, RTL8150_MTU, GFP_ATOMIC);
+	skb = netdev_alloc_skb_ip_align(dev->netdev, RTL8150_MTU);
 	if (!skb)
 		goto resched;
 
@@ -430,7 +430,7 @@ static void rx_fixup(unsigned long data)
 	if (test_bit(RX_URB_FAIL, &dev->flags))
 		if (dev->rx_skb)
 			goto try_again;
-	skb = __netdev_alloc_skb_ip_align(dev->netdev, RTL8150_MTU, GFP_ATOMIC);
+	skb = netdev_alloc_skb_ip_align(dev->netdev, RTL8150_MTU);
 	if (skb == NULL)
 		goto tlsched;
 	dev->rx_skb = skb;
@@ -562,7 +562,7 @@ static int rtl8150_open(struct net_device *netdev)
 	if (dev->rx_skb == NULL)
 		dev->rx_skb = __netdev_alloc_skb_ip_align(dev->netdev,
 							  RTL8150_MTU,
-							  GFP_ATOMIC);
+							  GFP_KERNEL);
 	if (!dev->rx_skb)
 		return -ENOMEM;
 
