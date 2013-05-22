@@ -25,7 +25,7 @@
 
 MODULE_DEVICE_TABLE(usb, rtl8150_table);
 
-static const char driver_name [] = "rtl8150";
+static const char driver_name[] = "rtl8150";
 
 /*
  *
@@ -99,7 +99,7 @@ static int async_set_registers(rtl8150_t *dev, u16 indx, u16 size, u16 reg)
 	return res;
 }
 
-static int read_mii_word(rtl8150_t *dev, u8 phy, __u8 indx, u16 *reg)
+static int read_mii_word(rtl8150_t *dev, u8 phy, u8 indx, u16 *reg)
 {
 	int i;
 	u8 data[3], tmp;
@@ -123,7 +123,7 @@ static int read_mii_word(rtl8150_t *dev, u8 phy, __u8 indx, u16 *reg)
 		return 1;
 }
 
-static int write_mii_word(rtl8150_t *dev, u8 phy, __u8 indx, u16 reg)
+static int write_mii_word(rtl8150_t *dev, u8 phy, u8 indx, u16 reg)
 {
 	int i;
 	u8 data[3], tmp;
@@ -331,7 +331,7 @@ static void write_bulk_callback(struct urb *urb)
 static void intr_callback(struct urb *urb)
 {
 	rtl8150_t *dev;
-	__u8 *d;
+	u8 *d;
 	int status = urb->status;
 	int res;
 
